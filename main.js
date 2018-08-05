@@ -66,39 +66,4 @@ $('.posts').on('click', '.remove', function () {
 
 
 
-// $('ul').on('click', 'li', function () {
-//     $(this).remove();
-//   });
 
-
-// const checkIdValue = function (idNum) {
-//     for (let index in posts) {
-//         while (idNum === posts[index].id) {
-//             idNum = Math.floor(Math.random() * 10000) + 1;
-//             checkIdValue(idNum);
-//         }        
-//     }
-// }
-
-
-// var i = array.indexOf("b");
-// if(i != -1) {
-// 	array.splice(i, 1);
-// }
-
-//<button type="button" class="remove">REMOVE</button>
-
-
-// $( "p" ).addClass( "myClass yourClass" );
-//$('div').attr('data-info', '222');
-
-// Now to render the array. Create a second function that adds all the posts in the posts array to the posts div.
-
-// In addition, add the id to the element with our data attribute. Each post element should look something like this:
-
-// <p class="post" data-id="1">Hey man! I'm a post!</p>
-
-
-// Each post object should have two properties: text (the user's input, a string) and 
-// id (a number, dynamically generated).
-// Each id should be unique to that post (no two post objects should have the same id).

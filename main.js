@@ -60,9 +60,6 @@ $('.posts').on('click', '.remove', function () {
 
 
 
-// for (let index in posts) {
-//     if ()
-// }
 
 
 

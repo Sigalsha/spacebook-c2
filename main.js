@@ -28,6 +28,8 @@ var SpacebookApp = function () {
     currentId: 4,
     currentCommentId: 1,
     $posts: $('.posts'),
+ 
+
 
     _findPostById: function (id) {
       for (var i = 0; i < this.posts.length; i += 1) {
@@ -60,26 +62,12 @@ var SpacebookApp = function () {
 
     renderPosts: function () {
       this.$posts.empty();
-
-      for (var i = 0; i < this.posts.length; i += 1) {
-        var post = this.posts[i];
-
-        var commentsContainer = `<div class="comments-container">
-                                  <input type="text" class="comment-name">
-                                  <button class="btn btn-primary add-comment">Post Comment</button> 
-                                  ${this.getCommentsHTML(post)}
-                                </div>`;
-
-        this.$posts.append('<div class="post" data-id=' + post.id + '>'
-          + '<a href="#" class="remove">remove</a> ' + '<a href="#" class="show-comments">comments</a> ' + post.text +
-          commentsContainer + '</div>');
-      }
+      postsObj = {posts: this.posts}
+      var source = $('#post-template').html();
+      var template = Handlebars.compile(source);
+      var newHTML = template(postsObj);
+      $('.posts').append(newHTML);
     },
-
-    // var source = $('#comments-template').html();
-    // var template = Handlebars.compile(source);
-    // var newHTML = template({posts});
-    // $('.posts').append(newHTML);
 
     removePost: function (postID) {
 
@@ -110,18 +98,18 @@ var SpacebookApp = function () {
         var comment = this._findCommentById(commentID, comments);
   
         comments.splice(comments.indexOf(comment), 1)
-    },
-
-    getCommentsHTML: function (post) {
-      const comments = post.comments;
-      var commentTxt = "";
-      for (var i = 0; i < comments.length; i++) {
-        var comment = comments[i];
-        commentTxt += '<li data-id=' + comment.id + '>' + comment.text + '<a href="#" class="removeComment">remove</a>' + '</li>';
-      }
-      var commentsList = "<ul>" + commentTxt + "</ul>";
-      return commentsList;
     }
+
+    // getCommentsHTML: function (post) {
+    //   const comments = post.comments;
+    //   var commentTxt = "";
+    //   for (var i = 0; i < comments.length; i++) {
+    //     var comment = comments[i];
+    //     commentTxt += '<li data-id=' + comment.id + '>' + comment.text + '<a href="#" class="removeComment">remove</a>' + '</li>';
+    //   }
+    //   var commentsList = "<ul>" + commentTxt + "</ul>";
+    //   return commentsList;
+    // }
   };
 }
 

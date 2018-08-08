@@ -19,7 +19,7 @@
         <h3>Add a New Post</h3>
 
         <div class="form-group">
-          <input type="text" id="post-name" class="form-control" placeholder="Post Text">
+          <input type="text" id="post-name" class="form-control" placeholder="Post Text" />
         </div>
 
         <button class="btn btn-primary add-post" type="button">Post</button>
@@ -27,22 +27,31 @@
 
     </div>
   </div>
-  <script>
-      <script id="comments-container-template" type="text/x-handlebars-template">
-          <div class="comments-container">
-            <input type="text" class="comment-name">
-            <button class="btn btn-primary add-comment">Post Comment</button>
-            
-            <${this.getCommentsHTML(post)}>
-          </div>
-      </script>
-      <script id="comment-li-template" type="text/x-handlebars-template">
-          <li class="comments-container">
-          </div>
-      </script>
 
-  <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.4/handlebars.js"></script>
-  <script src="main.js"></script>
+  <script id="post-template" type="text/x-handlebars-template">
+        {{#each posts}}
+          <div class="post" data-id="{{id}}">
+            <a href="#" class="remove">remove</a> 
+            <a href="#" class="show-comments">comments</a>
+            {{text}}
+            <div class="comments-container">
+              <input type="text" class="comment-name" />
+              <button class="btn btn-primary add-comment">Post Comment</button>
+              <ul>
+                  {{#each comments}}
+                      <li data-id="{{id}}">
+                        {{text}}
+                        <a href="#" class="removeComment">remove</a>
+                      </li>  
+                  {{/each}}    
+              </ul>
+            </div>
+          </div>
+        {{/each}}  
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.4/handlebars.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>

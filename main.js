@@ -1,27 +1,27 @@
 var SpacebookApp = function () {
   return {
     posts: [
-      {
-        text: "Hello world", id: 1, comments: [
-          { text: "Man, this is a comment!", id: 1},
-          { text: "Man, this is a comment!", id: 2 },
-          { text: "Man, this is a comment!", id: 3 }
-        ]
-      },
-      {
-        text: "Hello world", id: 2, comments: [
-          { text: "Man, this is a comment!", id: 1 },
-          { text: "Man, this is a comment!", id: 2 },
-          { text: "Man, this is a comment!", id: 3 }
-        ]
-      },
-      {
-        text: "Hello world", id: 3, comments: [
-          { text: "Man, this is a comment!", id: 1 },
-          { text: "Man, this is a comment!", id: 2 },
-          { text: "Man, this is a comment!", id: 3 }
-        ]
-      }
+      // {
+      //   text: "Hello world", id: 1, comments: [
+      //     { text: "Man, this is a comment!", id: 1},
+      //     { text: "Man, this is a comment!", id: 2 },
+      //     { text: "Man, this is a comment!", id: 3 }
+      //   ]
+      // },
+      // {
+      //   text: "Hello world", id: 2, comments: [
+      //     { text: "Man, this is a comment!", id: 1 },
+      //     { text: "Man, this is a comment!", id: 2 },
+      //     { text: "Man, this is a comment!", id: 3 }
+      //   ]
+      // },
+      // {
+      //   text: "Hello world", id: 3, comments: [
+      //     { text: "Man, this is a comment!", id: 1 },
+      //     { text: "Man, this is a comment!", id: 2 },
+      //     { text: "Man, this is a comment!", id: 3 }
+      //   ]
+      // }
     ],
 
     // the current id to assign to a post
@@ -37,10 +37,10 @@ var SpacebookApp = function () {
       }
     },
 
-    _findCommentById: function (id, comments) {
-      for (var i = 1; i < comments.length; i += 1) {
-        if (comments[i].id === id) {
-          return this.comments[i];
+    _findCommentById: function (id, array) {
+      for (var i = 0; i < array.length; i += 1) {
+        if (array[i].id === id) {
+          return array[i];
         }
       }
     },
@@ -155,9 +155,10 @@ $('.posts').on('click', '.add-comment', function() {
 
 $('.posts').on('click', '.removeComment', function () {
   var $clickedPost = $(this).closest('.post');
-  var postID = $(this).closest('.post').data("id");
-  var commentsLi = $clickedPost.find('li');
-  var commentID = commentsLi.data("id");
+  var postID = $clickedPost.data("id");
+  var commentLi = $(this).closest('li');
+  var commentID = commentLi.data("id");
+
   app.removeComment(postID, commentID);
   app.renderPosts();
 });

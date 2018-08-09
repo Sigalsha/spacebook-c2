@@ -39,10 +39,9 @@
               <button class="btn btn-primary add-comment">Post Comment</button>
               <ul>
                   {{#each comments}}
-                      <li data-id="{{id}}">
-                        {{text}}
-                        <a href="#" class="removeComment">remove</a>
-                      </li>  
+                    <li class="comment-li"data-id="{{id}}">{{text}}
+                      <a href="#" class="removeComment">remove</a> 
+                    </li> 
                   {{/each}}    
               </ul>
             </div>

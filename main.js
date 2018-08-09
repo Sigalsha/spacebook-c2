@@ -1,27 +1,29 @@
 var SpacebookApp = function () {
+  var source = $('#post-template').html();
+  var template = Handlebars.compile(source);
   return {
     posts: [
-      {
-        text: "Hello world", id: 1, comments: [
-          { text: "Man, this is a comment!", id: 1},
-          { text: "Man, this is a comment!", id: 2 },
-          { text: "Man, this is a comment!", id: 3 }
-        ]
-      },
-      {
-        text: "Hello world", id: 2, comments: [
-          { text: "Man, this is a comment!", id: 1 },
-          { text: "Man, this is a comment!", id: 2 },
-          { text: "Man, this is a comment!", id: 3 }
-        ]
-      },
-      {
-        text: "Hello world", id: 3, comments: [
-          { text: "Man, this is a comment!", id: 1 },
-          { text: "Man, this is a comment!", id: 2 },
-          { text: "Man, this is a comment!", id: 3 }
-        ]
-      }
+      // {
+      //   text: "Hello world", id: 1, comments: [
+      //     { text: "Man, this is a comment!", id: 1},
+      //     { text: "Man, this is a comment!", id: 2 },
+      //     { text: "Man, this is a comment!", id: 3 }
+      //   ]
+      // },
+      // {
+      //   text: "Hello world", id: 2, comments: [
+      //     { text: "Man, this is a comment!", id: 1 },
+      //     { text: "Man, this is a comment!", id: 2 },
+      //     { text: "Man, this is a comment!", id: 3 }
+      //   ]
+      // },
+      // {
+      //   text: "Hello world", id: 3, comments: [
+      //     { text: "Man, this is a comment!", id: 1 },
+      //     { text: "Man, this is a comment!", id: 2 },
+      //     { text: "Man, this is a comment!", id: 3 }
+      //   ]
+      // }
     ],
 
     // the current id to assign to a post
@@ -39,10 +41,10 @@ var SpacebookApp = function () {
       }
     },
 
-    _findCommentById: function (id, comments) {
-      for (var i = 1; i < comments.length; i += 1) {
-        if (comments[i].id === id) {
-          return this.comments[i];
+    _findCommentById: function (id, array) {
+      for (var i = 0; i < array.length; i += 1) {
+        if (array[i].id === id) {
+          return array[i];
         }
       }
     },
@@ -62,10 +64,7 @@ var SpacebookApp = function () {
 
     renderPosts: function () {
       this.$posts.empty();
-      postsObj = {posts: this.posts}
-      var source = $('#post-template').html();
-      var template = Handlebars.compile(source);
-      var newHTML = template(postsObj);
+      var newHTML = template({posts: this.posts});
       $('.posts').append(newHTML);
     },
 
@@ -86,10 +85,12 @@ var SpacebookApp = function () {
           text: text,
           id: this.currentCommentId   
         }
-        this.currentCommentId += 1;
+       
 
         var postById = this._findPostById(postID); 
         postById.comments.push(comment);   
+
+        this.currentCommentId += 1;
     },
 
     removeComment: function (postID, commentID) {
@@ -142,15 +143,17 @@ $('.posts').on('click', '.show-comments', function () {
 $('.posts').on('click', '.add-comment', function() {
   var text = $(this).closest('.post').find('.comment-name').val();
   var postID = $(this).closest('.post').data("id");
+
   app.createComment(text, postID);
   app.renderPosts();
 });
 
 $('.posts').on('click', '.removeComment', function () {
   var $clickedPost = $(this).closest('.post');
-  var postID = $(this).closest('.post').data("id");
-  var commentsLi = $clickedPost.find('li');
-  var commentID = commentsLi.data("id");
+  var postID = $clickedPost.data("id");
+  var commentLi = $(this).closest('.comment-li');
+  var commentID = commentLi.data("id");
+
   app.removeComment(postID, commentID);
   app.renderPosts();
 });

@@ -1,32 +1,24 @@
 var SpacebookApp = function () {
   return {
-    posts: [
-      {
-        text: "Hello world", id: 1, comments: [
-          { text: "Man, this is a comment!" },
-          { text: "Man, this is a comment!" },
-          { text: "Man, this is a comment!" }
-        ]
-      },
-      {
-        text: "Hello world", id: 2, comments: [
-          { text: "Man, this is a comment!" },
-          { text: "Man, this is a comment!" },
-          { text: "Man, this is a comment!" }
-        ]
-      },
-      {
-        text: "Hello world", id: 3, comments: [
-          { text: "Man, this is a comment!" },
-          { text: "Man, this is a comment!" },
-          { text: "Man, this is a comment!" }
-        ]
-      }
-    ],
+    posts: [],
+    STORAGE_ID: 'spacebook',
+    
+    saveToLocalStorage : function() {
+     localStorage.setItem(this.STORAGE_ID, JSON.stringify(this.posts));
+   },
 
+    getFromLocalStorage: function() {
+      return JSON.parse(localStorage.getItem(this.STORAGE_ID) || '[]');
+    },
+
+    updateFromLocalStorage: function() {
+      this.posts = this.getFromLocalStorage();
+    },
+    
     // the current id to assign to a post
     currentId: 4,
     $posts: $('.posts'),
+
 
     _findPostById: function (id) {
       for (var i = 0; i < this.posts.length; i += 1) {
@@ -46,29 +38,31 @@ var SpacebookApp = function () {
       this.currentId += 1;
 
       this.posts.push(post);
+      this.saveToLocalStorage();
     },
 
     renderPosts: function () {
       this.$posts.empty();
 
-      for (var i = 0; i < this.posts.length; i += 1) {
-        var post = this.posts[i];
+        for (var i = 0; i < this.posts.length; i += 1) {
+          var post = this.posts[i];
 
-        var commentsContainer = `<div class="comments-container">
-                                  <input type="text" class="comment-name">
-                                  <button class="btn btn-primary add-comment">Post Comment</button> 
-                                  ${this.getCommentsHTML(post)}
-                                </div>`;
+          var commentsContainer = `<div class="comments-container">
+                                    <input type="text" class="comment-name">
+                                    <button class="btn btn-primary add-comment">Post Comment</button> 
+                                    ${this.getCommentsHTML(post)}
+                                  </div>`;
 
-        this.$posts.append('<div class="post" data-id=' + post.id + '>'
-          + '<a href="#" class="remove">remove</a> ' + '<a href="#" class="show-comments">comments</a> ' + post.text +
-          commentsContainer + '</div>');
-      }
+          this.$posts.append('<div class="post" data-id=' + post.id + '>'
+            + '<a href="#" class="remove">remove</a> ' + '<a href="#" class="show-comments">comments</a> ' + post.text +
+            commentsContainer + '</div>');
+      }  
     },
 
     removePost: function (postID) {
       var post = this._findPostById(postID);
       this.posts.splice(this.posts.indexOf(post), 1);
+      this.saveToLocalStorage();
     },
 
     toggleComments: function (currentPost) {
@@ -82,11 +76,13 @@ var SpacebookApp = function () {
   
       // pushing the comment into the correct posts array
       this._findPostById(postID).comments.push(comment);
+      this.saveToLocalStorage();
     },
 
     removeComment: function (commentIndex, postID) {
       // remove the comment from the comments array on the correct post object
-      this._findPostById(postID).comments.splice(commentIndex, 1); 
+      this._findPostById(postID).comments.splice(commentIndex, 1);
+      this.saveToLocalStorage(); 
     },
 
     getCommentsHTML: function (post) {
@@ -103,9 +99,10 @@ var SpacebookApp = function () {
 }
 
 var app = SpacebookApp();
-
 // immediately invoke the render method
+app.updateFromLocalStorage();
 app.renderPosts();
+
 
 // Events
 $('.add-post').on('click', function () {

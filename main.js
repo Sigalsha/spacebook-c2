@@ -2,7 +2,8 @@ var SpacebookApp = function () {
   return {
     posts: [],
     STORAGE_ID: 'spacebook',
-    
+    currentId: null,
+
     saveToLocalStorage : function() {
      localStorage.setItem(this.STORAGE_ID, JSON.stringify(this.posts));
    },
@@ -15,8 +16,14 @@ var SpacebookApp = function () {
       this.posts = this.getFromLocalStorage();
     },
     
-    // the current id to assign to a post
-    currentId: 4,
+    S4: function() {
+      return (((1+Math.random())*0x10000)|0).toString(16).substring(1); 
+    },
+
+    createIdGUID: function() {
+      this.currentId = (this.S4() + this.S4() + "-" + this.S4() + "-4" + this.S4().substr(0,3) + "-" + this.S4() + "-" + this.S4() + this.S4() + this.S4()).toLowerCase();  
+    },
+  
     $posts: $('.posts'),
 
 
@@ -101,6 +108,7 @@ var SpacebookApp = function () {
 var app = SpacebookApp();
 // immediately invoke the render method
 app.updateFromLocalStorage();
+app.createIdGUID();
 app.renderPosts();
 
 

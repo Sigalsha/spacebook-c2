@@ -1,8 +1,17 @@
 class EventsHandler {
-    constructor(postsRepository, postsRenderer) {
+    constructor(postsRepository, postsRenderer, postsRequest) {
         this.postsRepository = postsRepository;
         this.postsRenderer = postsRenderer;
+        this.postsRequest = postsRequest;
         this.$posts = $(".posts");
+    }
+
+    initPosts() {
+        this.postsRequest.getPosts()
+        .then((data)=>{
+            this.postsRepository.addPost(data);
+            this.postsRenderer.renderPosts(this.postsRepository.posts);
+        })
     }
 
     registerAddPost() {

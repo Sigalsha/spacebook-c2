@@ -7,9 +7,9 @@ class EventsHandler {
     }
 
     initPosts() {
-        this.postsRequest.getPosts()
+        this.postsRequest.getPostsReq()
         .then((data)=>{
-            this.postsRepository.addPost(data);
+            this.postsRepository.addAllPosts(data);
             this.postsRenderer.renderPosts(this.postsRepository.posts);
         })
     }

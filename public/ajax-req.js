@@ -96,5 +96,3 @@ class PostsRequest {
 
 export default PostsRequest;
 
-// Still on the client-side, in the success handler, 
-// you should populate the posts array and then use it to render the view

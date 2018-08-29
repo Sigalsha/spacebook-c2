@@ -29,6 +29,7 @@ class PostsRenderer {
           $commentsList.append(newHTML);
         }
     }
+
 }
 
 export default PostsRenderer

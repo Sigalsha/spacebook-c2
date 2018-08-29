@@ -16,8 +16,9 @@ let postSchema = new Schema({
 });
 
 let Post = mongoose.model('post', postSchema)
-
-module.exports = Post; 
+let Comment = mongoose.model('comment', commentSchema)
+module.exports = {Post, Comment};
+ 
 
 //'aPost' is a single post document (that has be created or found)
 // aPost.comments.push({ username: "Bob", text: "Great Post!" })

@@ -1,12 +1,13 @@
 /**
-     * @class Responsible for storing and manipulating Spacebook posts, in-memory
+     * @class Responsible for managing the Ajax requests
      */
 class PostsRequest {
     constructor() {
         this.GET = 'GET';
         this.POST = 'POST';
+        this.DELETE = 'DELETE';
         this.urlPosts = '/posts';
-        // this.data = 
+        // this.urlPostId = '/posts' + postId;
     }
 
     getPostsReq() {
@@ -25,12 +26,60 @@ class PostsRequest {
         })
     }
 
-    sendPostReq(text) {
-        const data = text;
+    sendPostReq(postText) {
         return $.ajax({
             method: this.POST,
             url: this.urlPosts,
-            data: data,
+            data: {text: postText}
+        })
+        .then(function (data) {
+            console.log(data);
+            return data;
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus);
+            let errorMes = 'error had occure';
+            return errorMes;
+        })
+    }
+
+    deletePost(postId) {
+        return $.ajax({
+            method: this.DELETE,
+            url: '/posts/' + postId,
+        })
+        .then(function (data) {
+            console.log(data);
+            return data;
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus);
+            let errorMes = 'error had occure';
+            return errorMes;
+        })
+    }
+
+    postComment(postId, newComment){
+        return $.ajax({
+            method: this.POST,
+            url: '/posts/' + postId + '/comments',
+            data: newComment
+        })
+        .then(function (data) {
+            console.log(data);
+            return data;
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus);
+            let errorMes = 'error had occure';
+            return errorMes;
+        })
+    }
+
+    deleteComment(postId, commentId) {
+        return $.ajax({
+            method: this.DELETE,
+            url: '/posts/' + postId + '/' + commentId,
         })
         .then(function (data) {
             console.log(data);
@@ -43,6 +92,7 @@ class PostsRequest {
         })
     }
 }
+
 
 export default PostsRequest;
 

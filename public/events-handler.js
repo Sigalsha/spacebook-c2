@@ -20,19 +20,28 @@ class EventsHandler {
             if ($input.val() === "") {
                 alert("Please enter text!"); 
             } else {
-                this.postsRepository.addPost($input.val());
-                this.postsRenderer.renderPosts(this.postsRepository.posts);
-                $input.val("");
+                this.postsRequest.sendPostReq($input.val())
+                .then((data)=>{
+                    this.postsRepository.addPost(data);
+                    this.postsRenderer.renderPosts(this.postsRepository.posts);
+                    $input.val("");
+                })
             }
-            });        
+        });        
     }
 
     registerRemovePost() {
         this.$posts.on('click', '.remove-post', (event) => {
-            let index = $(event.currentTarget).closest('.post').index();;
-            this.postsRepository.removePost(index);
-            this.postsRenderer.renderPosts(this.postsRepository.posts);
-          });
+            let $currentPost =  $(event.currentTarget).closest('.post')
+            let index = $currentPost.index();
+            let $currentPostDataId = $currentPost.data('id');
+            this.postsRequest.deletePost($currentPostDataId)
+            .then((data)=>{
+                alert(data);
+                this.postsRepository.removePost(index);
+                this.postsRenderer.renderPosts(this.postsRepository.posts);
+            })
+        });
 
     }
 
@@ -52,12 +61,15 @@ class EventsHandler {
               alert("Please enter your name and a comment!");
               return;
             }
-          
-            let postIndex = $(event.currentTarget).closest('.post').index();
+            let $post = $(event.currentTarget).closest('.post');
+            let postIndex = $post.index();
+            let $postId = $post.data('id');
             let newComment = { text: $comment.val(), user: $user.val() };
-          
-            this.postsRepository.addComment(newComment, postIndex);
-            this.postsRenderer.renderComments(this.postsRepository.posts, postIndex);
+            this.postsRequest.postComment($postId, newComment)
+            .then((data)=>{
+                this.postsRepository.addComment(data, postIndex);
+                this.postsRenderer.renderComments(this.postsRepository.posts, postIndex);
+            })
             $comment.val("");
             $user.val("");
           });
@@ -66,11 +78,20 @@ class EventsHandler {
 
     registerRemoveComment() {
         this.$posts.on('click', '.remove-comment', (event) => {
-            let $commentsList = $(event.currentTarget).closest('.post').find('.comments-list');
-            let postIndex = $(event.currentTarget).closest('.post').index();
-            let commentIndex = $(event.currentTarget).closest('.comment').index();
-            this.postsRepository.deleteComment(postIndex, commentIndex);
-            this.postsRenderer.renderComments(this.postsRepository.posts, postIndex);
+            let $currentPost = $(event.currentTarget).closest('.post');
+            let $postId = $currentPost.data('id');
+            let $commentsList = $currentPost.find('.comments-list');
+            let postIndex = $currentPost.index();
+            let $comment = $(event.currentTarget).closest('.comment');
+            let commentIndex = $comment.index();
+            let $commentId = $comment.data('id');
+            
+            this.postsRequest.deleteComment($postId, $commentId)
+            .then((data)=> {
+                alert(data);
+                this.postsRepository.deleteComment(postIndex, commentIndex);
+                this.postsRenderer.renderComments(this.postsRepository.posts, postIndex);
+            })
         });
     }
 }

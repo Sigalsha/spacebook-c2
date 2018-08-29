@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-const postModel = require('./models/postModel');
+// const allModels = require('./models/postModel');
 const api = require('./api');
 const SERVER_PORT = 8080;
 
@@ -14,7 +14,7 @@ var app = express();
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 app.use('/', api);
-app.use('/models/', postModel);
+// app.use('/models/', allModels);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 

@@ -7,7 +7,6 @@ class PostsRequest {
         this.POST = 'POST';
         this.DELETE = 'DELETE';
         this.urlPosts = '/posts';
-        // this.urlPostId = '/posts' + postId;
     }
 
     getPostsReq() {
